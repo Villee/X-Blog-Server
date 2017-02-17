@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var mongoose = require('mongoose');//导入mongoose模块
+var checkParams = require('../middleware/checkkBlogPost');//检查发布文章参数是否合法的中间件
 var blogContentMaxLen = 200;//博文列表api中文章内容预览长度
 
 var Blog = require('../models/blog');//导入模型数据模块
@@ -11,12 +12,16 @@ var router = express.Router();
 var idCreater = 1;
 
 //新增加一片博客
+router.post('/', checkParams);
 router.post('/', function (req, res) {
     var now = new Date().getTime();
     var blog = new Blog({
-        blogId: req.body.blogId,
         title: req.body.title,
         content: req.body.content,
+        description: req.body.description,
+        status: req.body.status,
+        category: req.body.category,
+        tag: req.body.tag,
         createAt: now,
         lastUpdate: now,
         readCount: 0,
