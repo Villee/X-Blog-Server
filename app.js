@@ -7,7 +7,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var index = require('./routes/index');
-var blog = require('./routes/blogs');
+var posts = require('./routes/posts');
+var comments = require('./routes/comments');
 
 var app = express();
 
@@ -20,33 +21,30 @@ app.set('view engine', 'jade');
 mongoose.connect('mongodb://localhost/x-codder-blog') //连接本地数据库
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('*',function (req, res,next) {
-    console.log('接受到请求：'+req.originalUrl)
-    next();
-})
 app.use('/', index);
-app.use('/x-blog/blog', blog);
+app.use('/x-blog/posts', posts);
+app.use('/x-blog/comments', comments);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+app.use(function (req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
 module.exports = app;
