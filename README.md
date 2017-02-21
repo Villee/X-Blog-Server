@@ -1,6 +1,6 @@
 # X-Codder-Blog
 
-X-Codder-Blog是基于Vue+Vue-Router+Axios搭建的个人博客项目，采用响应式布局方式，适应各种分辨率，后端使用Node+Express+MongoDB，提供纯数据接口，实现前后端分离，[后端项目地址](https://github.com/X-Codder/X-Codder-Blog-Server)
+X-Codder-Blog是基于Vue+Vue-Router+Axios搭建的个人博客项目，采用响应式布局方式，适应各种分辨率，后端使用Node+Express+MongoDB，提供纯数据接口，实现前后端分离，[前端项目地址](https://github.com/X-Codder/X-Codder-Blog)
 
 ## 开始
 ```
