@@ -28,24 +28,42 @@ router.post('/', function (req, res) {
         img: req.body.img,
         author: 'X-Codder'
     });
+    console.log('get save post req,post title :' + post.title);
     post.save();
-    console.log('新增一条blog记录!');
+    console.log('post saved!');
     //res.writeHead(200,{'Content-Type':'text/json;charset=utf-8'});
     res.json(JSON.stringify(post));
 })
 
 //请求文章列表，默认返回10篇，按时间降序
 router.get('/', function (req, res) {
-    var limit = parseInt(req.query.limit) || 10;
-    var sortby = req.query.sortby || 'createAt';
-    var order = req.query.order || 'desc';
-    //该接口用于请求博文列表，将文章内容去掉，减少数据传输量
-    Post.find({}).sort('-createAt').limit(limit).exec(function (err, posts) {
-        var cposts = posts.map(function (post) {
-            post.content = null;
-            return post;
-        });
-        res.json(cposts);
+    var offset = parseInt(req.query.page) || 0;//偏移页码
+    var limit = parseInt(req.query.limit) || 10;//每页条目数量
+    var fields = req.query.fields;
+    console.log('query for posts list!');
+    Post.find({}, fields && fields.split(',')).sort('-createAt').limit(limit).skip(offset * limit).exec(function (err, posts) {
+        if (err) {
+            res.status = 404;
+            res.json(err);
+        } else {
+            res.status = 200;
+            res.json(posts);
+        }
+    })
+});
+
+//查询文章总数
+router.get('/id', function (req, res) {
+    console.log('query for posts count!');
+    Post.find({}, ['_id'], function (err, posts) {
+        if (err) {
+            console.log(err);
+            res.status = 404;
+            res.json(err);
+        } else {
+            res.status = 200;
+            res.json(posts);
+        }
     })
 });
 
