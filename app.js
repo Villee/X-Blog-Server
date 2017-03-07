@@ -14,7 +14,7 @@ var app = express();
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-mongoose.connect('mongodb://localhost/x-codder-blog') //连接本地数据库
+mongoose.connect('mongodb://villee:123456@localhost/x-codder-blog') //连接本地数据库
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));

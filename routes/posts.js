@@ -37,7 +37,7 @@ router.post('/', function (req, res) {
 
 //请求文章列表，默认返回10篇，按时间降序
 router.get('/', function (req, res) {
-    var offset = parseInt(req.query.page) || 0;//偏移页码
+    var offset = parseInt(req.query.offset) || 0;//偏移页码
     var limit = parseInt(req.query.limit) || 10;//每页条目数量
     var fields = req.query.fields;
     console.log('query for posts list!');
@@ -78,6 +78,23 @@ router.get('/id/:id', function (req, res, next) {
             next(err);
         } else {
             res.json(post);
+        }
+    })
+});
+
+//根据文章删除文章
+router.delete('/id/:id', function (req, res, next) {
+    var id = req.params.id || '';
+    console.log('delete request for postId ' + id);
+    Post.remove({_id: id}, function (err, post) {
+        if (err) {
+            console.log('没有检索到请求删除的文章!');
+            err.status = 404;
+            next(err);
+        } else {
+            console.log('delete post success!')
+            res.status = 200;
+            res.json({result: 'delete post success!'});
         }
     })
 });
